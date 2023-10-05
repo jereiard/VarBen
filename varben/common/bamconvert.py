@@ -64,23 +64,23 @@ def map_novoalign(ref_index, out_sam, fq1, fq2=None, process=1):
 
 
 def samToBam(inSamFile, outBamFile):
-    samToBam_cmd = "samtools view -bS %s > %s" % (inSamFile, outBamFile)
+    samToBam_cmd = "samtools view -@96 -bS %s > %s" % (inSamFile, outBamFile)
     _call(samToBam_cmd)
 
 
 # def bamSort_new(inBamFile, sortedBamFile, sort_key=None):
 def bamSort(inBamFile, sortedBamFile_prefix, sort_key=None):
     if not sort_key:
-        bamSort_cmd = "samtools sort -o %s %s" % (sortedBamFile_prefix + ".bam", inBamFile)
+        bamSort_cmd = "samtools sort -@96 -o %s %s" % (sortedBamFile_prefix + ".bam", inBamFile)
     elif sort_key == "name":
-        bamSort_cmd = "samtools sort -n -o %s %s" % (sortedBamFile_prefix + ".bam", inBamFile)
+        bamSort_cmd = "samtools sort -@96 -n -o %s %s" % (sortedBamFile_prefix + ".bam", inBamFile)
     print "samtools sort start................................"
     _call(bamSort_cmd)
     print "samtools sort end.................................."
 
 
 def bamIndex(inBamFile):
-    index_cmd = "samtools index %s" % (inBamFile)
+    index_cmd = "samtools index -@96 %s" % (inBamFile)
     print "samtools index start .............................."
     _call(index_cmd)
     print "samtools index end ................................"
@@ -144,7 +144,7 @@ def remap_tmap(ref_index, inBamFile, outBamFile, threadNum=1):
 
 
 def bamMerge(bamList, outBamFile):
-    cmd = "samtools merge -c -f %s %s" % (outBamFile, " ".join(bamList))
+    cmd = "samtools merge -@96 -c -f %s %s" % (outBamFile, " ".join(bamList))
     _call(cmd)
 
 
@@ -164,7 +164,7 @@ def bamMerge_picard(bamList, outBamFile, picard_path, sort_order='coordinate'):
 
 
 def getRegionReads(inBam, regionBed, inRegionBam, outRegionBam):
-    cmd = "samtools view %s -b -h -o %s -U %s -L %s" % (inBam, inRegionBam, outRegionBam, regionBed)
+    cmd = "samtools view -@96 %s -b -h -o %s -U %s -L %s" % (inBam, inRegionBam, outRegionBam, regionBed)
     _call(cmd)
 
 
